@@ -1,14 +1,17 @@
 <?php
 
-/* session_start();
+require_once '../includes/session.php';
+
+startSession();
+
 if (!isset($_SESSION['admin_id'])) {
-  header("Location: authentication-register.php");
+  header("Location: authentication-login.php");
   exit;
-} */
+}
 
 ?>
 
-<?php include 'includes/header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <!--  Body Wrapper -->
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -182,7 +185,7 @@ if (!isset($_SESSION['admin_id'])) {
                     <i class="ti ti-list-check fs-6"></i>
                     <p class="mb-0 fs-3">My Task</p>
                   </a>
-                  <a href="./authentication-login.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  <a href="../auth/logout_handler.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                 </div>
               </div>
             </li>

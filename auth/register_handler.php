@@ -2,35 +2,48 @@
 
 header('Content-Type: application/json');
 
+require_once '../includes/helpers.php';
+require_once "../database/connection.php";
+require_once '../models/UserModel.php';
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
-    exit;
+    sendResponse('error', 'Invalid request method.');
 }
 
 $username = trim($_POST['username'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
-$confirmPassword = $_POST['confirm_password'] ?? '';
 
-// === Validation logic ===
 $errors = [];
 
 if (empty($username)) {
-    $errors[] = 'Username is required.';
+    $errors['username'] = 'Username is required.';
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = 'Invalid email format.';
+    $errors['email'] = 'Invalid email format.';
 }
 if (strlen($password) < 6) {
-    $errors[] = 'Password must be at least 6 characters.';
-}
-if ($password !== $confirmPassword) {
-    $errors[] = 'Passwords do not match.';
+    $errors['password'] = 'Password must be at least 6 characters.';
 }
 
 if (!empty($errors)) {
-    echo json_encode(['status' => 'error', 'message' => implode(' ', $errors)]);
-    exit;
+    sendResponse('error', $errors);
 }
 
-echo json_encode(['status' => 'success', 'message' => 'Registration successful!']);
+try {
+    $conn = getDBConnection();
+
+    if (getUserByName($conn, $username)) {
+        sendResponse('error', ['username' => 'User already exists']);
+    }
+    if (getUserByEmail($conn, $email)) {
+        sendResponse('error', ['email' => 'Email already registered']);
+    }
+
+    $hashedPassword  = password_hash($password, PASSWORD_DEFAULT);
+    createUser($conn, $username, $email, $hashedPassword);
+
+    sendResponse('success', 'Registration successful!');
+} catch (PDOException $e) {
+    sendResponse('error', 'Database error occurred.');
+}
