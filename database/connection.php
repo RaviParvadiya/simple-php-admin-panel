@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../config/config.php';
 
-function getDBConnection(): PDO
+function getDBConnection()
 {
     try {
         $conn = new PDO("mysql:host=" . DB_HOST, DB_USER, DB_PASS);
@@ -14,6 +14,7 @@ function getDBConnection(): PDO
 
         return $conn;
     } catch (PDOException $e) {
-        die(json_encode(['error' => 'Database connection failed']));
+        // die(json_encode(['error' => 'Database connection failed']));
+        throw $e;
     }
 }

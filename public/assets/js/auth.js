@@ -187,4 +187,74 @@ $(function () {
       },
     });
   });
+
+  // ========================================
+  // PRODUCT HANDLER
+  // ========================================
+
+  $("#addProductForm").on("submit", function (e) {
+    e.preventDefault();
+
+    var formData = new FormData(this); // create form data including files
+
+    $.ajax({
+      url: $(this).attr("action"),
+      method: "POST",
+      data: formData,
+      contentType: false, // important for file upload
+      processData: false, // important for file upload
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "error") {
+          $("#formMessage").html(
+            '<div class="alert alert-danger">' + response.message + "</div>"
+          );
+        } else if (response.status === "success") {
+          $("#formMessage").html(
+            '<div class="alert alert-success">' + response.message + "</div>"
+          );
+          $("#addProductForm")[0].reset(); // clear form on success if you want
+        } else {
+          $("#formMessage").html(
+            '<div class="alert alert-warning">Unexpected response from server.</div>'
+          );
+        }
+      },
+      error: function () {
+        $("#formMessage").html(
+          '<div class="alert alert-danger">An error occurred. Please try again.</div>'
+        );
+      },
+    });
+  });
+
+  $(".delete-product").click(function (e) {
+    e.preventDefault();
+
+    const productId = $(this).data("id");
+    $ask = confirm("Are you sure you want to delete this product?");
+
+    if (!$ask) {
+      return console.log("Abort");
+    }
+
+    $.ajax({
+      url: "/simple/handlers/delete_product.php",
+      method: "POST",
+      data: { id: productId },
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "success") {
+          // Remove the card from DOM
+          $(`.product-card[data-id="${productId}"]`).remove();
+          alert("Product deleted successfully.");
+        } else {
+          alert("Error deleting product.");
+        }
+      },
+      error: function () {
+        alert("Something went wrong.");
+      },
+    });
+  });
 });
