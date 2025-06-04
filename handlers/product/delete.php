@@ -2,24 +2,24 @@
 
 header('Content-Type: application/json');
 
-require_once '../database/connection.php';
-require_once '../includes/helpers.php';
-require_once '../models/ProductModel.php';
+require_once DATABASE_PATH . '/connection.php';
+require_once INCLUDES_PATH . '/helpers.php';
+require_once MODELS_PATH . '/ProductModel.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendResponse('error', 'Invalid request method.');
 }
 
 
-$product_id = $_POST['id'];
+$id = trim($_POST['id']);
 
-if (!$product_id) {
+if (!$id) {
     sendResponse('error', 'No ID provided.');
 }
 
 try {
     $conn = getDBConnection();
-    if (deleteProductById($conn, $product_id)) {
+    if (deleteProductById($conn, $id)) {
         sendResponse('success', 'Product deleted successfully.');
     }
     sendResponse('error', 'Error deleting product.');

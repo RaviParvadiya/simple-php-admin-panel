@@ -1,6 +1,7 @@
 <?php
 
-require_once '../includes/session.php';
+require_once dirname(__DIR__) . '/config/config.php';
+require_once INCLUDES_PATH . '/session.php';
 
 startSession();
 
@@ -11,7 +12,7 @@ if (isset($_SESSION['admin_id'])) {
 
 ?>
 
-<?php include '../includes/header.php'; ?>
+<?php include INCLUDES_PATH . '/partials/header.php'; ?>
 
 <!--  Body Wrapper -->
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -48,7 +49,7 @@ if (isset($_SESSION['admin_id'])) {
                 <a href="#" id="loginBtn" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</a>
                 <div class="d-flex align-items-center justify-content-center">
                   <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
-                  <a class="text-primary fw-bold ms-2" href="./authentication-register.php">Create an account</a>
+                  <a class="text-primary fw-bold ms-2" href="./register.php">Create an account</a>
                 </div>
               </form>
             </div>
@@ -59,4 +60,4 @@ if (isset($_SESSION['admin_id'])) {
   </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include INCLUDES_PATH . '/partials/footer.php'; ?>

@@ -4,17 +4,39 @@ USE `admin_panel`;
 
 CREATE TABLE
     IF NOT EXISTS `admins` (
-        id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(50) NOT NULL,
         email VARCHAR(100) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
 CREATE TABLE
     IF NOT EXISTS `products` (
-        product_id INT (10) AUTO_INCREMENT PRIMARY KEY,
-        product_image VARCHAR(255) NOT NULL,
-        product_title VARCHAR(255) NOT NULL,
-        original_price INT NOT NULL,
-        discounted_price INT NOT NULL
-    )
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        category_id INT,
+        image_url VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        price INT NOT NULL,
+        discounted_price INT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
+CREATE TABLE
+    IF NOT EXISTS `categories` (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
+CREATE TABLE
+    IF NOT EXISTS `users` (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(100) UNIQUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );

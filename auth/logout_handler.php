@@ -1,10 +1,10 @@
 <?php
 
 
-require_once '../includes/session.php';
+require_once INCLUDES_PATH . '/session.php';
 
 startSession();
 destroySession();
 
-header('Location: ../public/authentication-login.php');
+header('Location: ../public/login.php');
 exit;

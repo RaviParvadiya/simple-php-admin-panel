@@ -1,14 +1,15 @@
 <?php
 
 
-function addProduct($conn, $product_image, $product_title, $original_price, $discounted_price)
+function addProduct($conn, $category_id, $image_url, $title, $price, $discounted_price)
 {
-    $stmt = $conn->prepare('INSERT INTO `products` (product_image, product_title, original_price, discounted_price) 
-                            VALUES (:product_image, :product_title, :original_price, :discounted_price)');
+    $stmt = $conn->prepare('INSERT INTO `products` (category_id, image_url, title, price, discounted_price) 
+                            VALUES (:category_id, :image_url, :title, :price, :discounted_price)');
     return $stmt->execute([
-        ':product_image' => $product_image,
-        ':product_title' => $product_title,
-        ':original_price' => $original_price,
+        ':category_id' => $category_id,
+        ':image_url' => $image_url,
+        ':title' => $title,
+        ':price' => $price,
         ':discounted_price' => $discounted_price,
     ]);
 }
@@ -19,8 +20,32 @@ function getAllProducts($conn)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function deleteProductById($conn, $product_id)
+function deleteProductById($conn, $id)
 {
-    $stmt = $conn->prepare('DELETE FROM `products` WHERE product_id = :product_id');
-    return $stmt->execute([':product_id'  => $product_id]);
+    $stmt = $conn->prepare('DELETE FROM `products` WHERE id = :id');
+    return $stmt->execute([':id'  => $id]);
+}
+
+function getProductsById($conn, $id)
+{
+    $stmt = $conn->prepare('SELECT * FROM `products` WHERE id = :id');
+    $stmt->execute([':id'  => $id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function updateProduct($conn, $id, $category_id,  $image_url, $title, $price, $discounted_price)
+{
+    $stmt = $conn->prepare(
+        'UPDATE `products` 
+    SET category_id = :category_id, image_url = :image_url, title = :title, price = :price, discounted_price = :discounted_price  
+    WHERE id = :id'
+    );
+    return $stmt->execute([
+        ':category_id' => $category_id,
+        ':image_url' => $image_url,
+        ':title' => $title,
+        ':price' => $price,
+        ':discounted_price' => $discounted_price,
+        'id' => $id,
+    ]);
 }

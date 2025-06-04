@@ -31,7 +31,7 @@ function checkUserSession()
 
     if (!isset($_SESSION['admin_id'])) {
         destroySession();
-        header("Location: authentication-login.php");
+        header("Location: login.php");
         exit;
     }
 
@@ -39,7 +39,7 @@ function checkUserSession()
     // and if the inactivity duration has exceeded the timeout
     if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
         destroySession();
-        header("Location: authentication-login.php?timeout=1");
+        header("Location: login.php?timeout=1");
         exit;
     }
 

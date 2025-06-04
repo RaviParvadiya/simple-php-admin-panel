@@ -11,7 +11,7 @@ if (isset($_SESSION['admin_id'])) {
 
 ?>
 
-<?php include '../includes/header.php'; ?>
+<?php include INCLUDES_PATH . '/partials/header.php'; ?>
 
 <!--  Body Wrapper -->
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -46,7 +46,7 @@ if (isset($_SESSION['admin_id'])) {
                 <a href="#" id="signupBtn" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign Up</a>
                 <div class="d-flex align-items-center justify-content-center">
                   <p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-                  <a class="text-primary fw-bold ms-2" href="./authentication-login.php">Sign In</a>
+                  <a class="text-primary fw-bold ms-2" href="./login.php">Sign In</a>
                 </div>
               </form>
             </div>
@@ -57,4 +57,4 @@ if (isset($_SESSION['admin_id'])) {
   </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include INCLUDES_PATH . '/partials/footer.php'; ?>

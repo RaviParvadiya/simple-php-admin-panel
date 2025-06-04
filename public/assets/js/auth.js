@@ -136,7 +136,7 @@ $(function () {
         if (response.status === "success") {
           console.log(response.message);
           setTimeout(() => {
-            window.location.href = "authentication-login.php";
+            window.location.href = "login.php";
           }, 500);
         } else {
           if (response.message.username) {
@@ -239,7 +239,7 @@ $(function () {
     }
 
     $.ajax({
-      url: "/simple/handlers/delete_product.php",
+      url: "/simple/handlers/product/delete.php",
       method: "POST",
       data: { id: productId },
       dataType: "json",
@@ -254,6 +254,277 @@ $(function () {
       },
       error: function () {
         alert("Something went wrong.");
+      },
+    });
+  });
+
+  $("#editProductForm").on("submit", function (e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+
+    $ask = confirm("Are you sure you want to update this product?");
+
+    if (!$ask) {
+      return console.log("Abort");
+    }
+
+    $.ajax({
+      url: $(this).attr("action"),
+      method: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "error") {
+          $("#formMessage").html(
+            '<div class="alert alert-danger">' + response.message + "</div>"
+          );
+        } else if (response.status === "success") {
+          $("#formMessage").html(
+            '<div class="alert alert-success">' + response.message + "</div>"
+          );
+
+          /* 
+          $("#editProductForm")[0].reset(); // clear form on success if you want
+          $("#editProductForm input[type='file']").val(""); */
+
+          setTimeout(function () {
+            window.location.href = "products.php";
+          }, 800);
+        } else {
+          $("#formMessage").html(
+            '<div class="alert alert-warning">Unexpected response from server.</div>'
+          );
+        }
+      },
+      error: function () {
+        $("#formMessage").html(
+          '<div class="alert alert-danger">An error occurred. Please try again.</div>'
+        );
+      },
+    });
+  });
+
+  // ========================================
+  // Category HANDLER
+  // ========================================
+
+  $("#addCategoryForm").on("submit", function (e) {
+    e.preventDefault();
+
+    const category_name = $("#category_name").val().trim();
+
+    $.ajax({
+      url: "/simple/handlers/category/add.php",
+      method: "POST",
+      data: { category_name },
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "error") {
+          $("#formMessage").html(
+            '<div class="alert alert-danger">' + response.message + "</div>"
+          );
+        } else if (response.status === "success") {
+          $("#formMessage").html(
+            '<div class="alert alert-success">' + response.message + "</div>"
+          );
+          $("#addUserForm")[0].reset();
+        } else {
+          $("#formMessage").html(
+            '<div class="alert alert-warning">Unexpected response from server.</div>'
+          );
+        }
+      },
+      error: function () {
+        $("#formMessage").html(
+          '<div class="alert alert-danger">An error occurred. Please try again.</div>'
+        );
+      },
+    });
+  });
+
+  $(".delete-category").click(function (e) {
+    e.preventDefault();
+
+    const categoryId = $(this).data("id");
+    $ask = confirm("Are you sure you want to delete this category?");
+
+    if (!$ask) {
+      return console.log("Abort");
+    }
+
+    $.ajax({
+      url: "/simple/handlers/category/delete.php",
+      method: "POST",
+      data: { id: categoryId },
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "success") {
+          // Remove the card from DOM
+          $(`.category-card[data-id="${categoryId}"]`).remove();
+          alert("Category deleted successfully.");
+        } else {
+          alert("Error deleting category.");
+        }
+      },
+      error: function () {
+        alert("Something went wrong.");
+      },
+    });
+  });
+
+  $("#editCategoryForm").on("submit", function (e) {
+    e.preventDefault();
+
+    var formData = $(this).serialize();
+
+    $ask = confirm("Are you sure you want to update this category?");
+
+    if (!$ask) {
+      return console.log("Abort");
+    }
+
+    $.ajax({
+      url: "/simple/handlers/category/update.php",
+      method: "POST",
+      data: formData,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "error") {
+          $("#formMessage").html(
+            '<div class="alert alert-danger">' + response.message + "</div>"
+          );
+        } else if (response.status === "success") {
+          $("#formMessage").html(
+            '<div class="alert alert-success">' + response.message + "</div>"
+          );
+
+          setTimeout(function () {
+            window.location.href = "categories.php";
+          }, 800);
+        } else {
+          $("#formMessage").html(
+            '<div class="alert alert-warning">Unexpected response from server.</div>'
+          );
+        }
+      },
+      error: function () {
+        $("#formMessage").html(
+          '<div class="alert alert-danger">An error occurred. Please try again.</div>'
+        );
+      },
+    });
+  });
+
+  // ========================================
+  // User HANDLER
+  // ========================================
+
+  $("#addUserForm").on("submit", function (e) {
+    e.preventDefault();
+
+    const formData = $(this).serialize();
+
+    $.ajax({
+      url: "/simple/handlers/user/add.php",
+      method: "POST",
+      data: formData,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "error") {
+          $("#formMessage").html(
+            '<div class="alert alert-danger">' + response.message + "</div>"
+          );
+        } else if (response.status === "success") {
+          $("#formMessage").html(
+            '<div class="alert alert-success">' + response.message + "</div>"
+          );
+          $("#addUserForm")[0].reset();
+        } else {
+          $("#formMessage").html(
+            '<div class="alert alert-warning">Unexpected response from server.</div>'
+          );
+        }
+      },
+      error: function () {
+        $("#formMessage").html(
+          '<div class="alert alert-danger">An error occurred. Please try again.</div>'
+        );
+      },
+    });
+  });
+
+  $(".delete-user").click(function (e) {
+    e.preventDefault();
+
+    const userId = $(this).data("id");
+    $ask = confirm("Are you sure you want to delete this user?");
+
+    if (!$ask) {
+      return console.log("Abort");
+    }
+
+    $.ajax({
+      url: "/simple/handlers/user/delete.php",
+      method: "POST",
+      data: { id: userId },
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "success") {
+          // Remove the card from DOM
+          $(`.user-card[data-id="${userId}"]`).remove();
+          alert("User deleted successfully.");
+        } else {
+          alert("Error deleting user.");
+        }
+      },
+      error: function () {
+        alert("Something went wrong.");
+      },
+    });
+  });
+
+  $("#editUserForm").on("submit", function (e) {
+    e.preventDefault();
+
+    var formData = $(this).serialize();
+
+    $ask = confirm("Are you sure you want to update this user?");
+
+    if (!$ask) {
+      return console.log("Abort");
+    }
+
+    $.ajax({
+      url: "/simple/handlers/user/update.php",
+      method: "POST",
+      data: formData,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "error") {
+          $("#formMessage").html(
+            '<div class="alert alert-danger">' + response.message + "</div>"
+          );
+        } else if (response.status === "success") {
+          $("#formMessage").html(
+            '<div class="alert alert-success">' + response.message + "</div>"
+          );
+
+          setTimeout(function () {
+            window.location.href = "users.php";
+          }, 800);
+        } else {
+          $("#formMessage").html(
+            '<div class="alert alert-warning">Unexpected response from server.</div>'
+          );
+        }
+      },
+      error: function () {
+        $("#formMessage").html(
+          '<div class="alert alert-danger">An error occurred. Please try again.</div>'
+        );
       },
     });
   });

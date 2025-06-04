@@ -1,24 +1,47 @@
 <?php
 
-
-function createUser(PDO $conn, string $username, string $email, string $password): bool
+function addUser($conn, $name, $email)
 {
-    $stmt = $conn->prepare('INSERT INTO admins (username, email, password) VALUES (:username, :email, :password)');
-    return $stmt->execute([':username' => $username, ':email' => $email, ':password' => $password]);
+    $stmt = $conn->prepare('INSERT INTO `users` (name, email) VALUES (:name, :email)');
+    return $stmt->execute([':name' => $name, ':email' => $email]);
 }
 
-function getUserByEmail(PDO $conn, string $email): ?array
+function emailExists($conn, $email)
 {
-    $stmt = $conn->prepare('SELECT * FROM admins WHERE email = :email');
+    $stmt = $conn->prepare('SELECT count(*) FROM `users` WHERE email = :email');
     $stmt->execute([':email' => $email]);
-    return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    return $stmt->fetchColumn() > 0;
 }
 
-function getUserByName(PDO $conn, string $username): ?array
+function getAllUsers($conn)
 {
-    $stmt = $conn->prepare('SELECT * FROM admins WHERE username = :username');
-    $stmt->execute([':username' => $username]);
-    return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    $stmt = $conn->query('SELECT * FROM `users`');
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getUserById($conn, $id) {}
+function getUserById($conn, $id)
+{
+    $stmt = $conn->prepare('SELECT * FROM `users` WHERE id = :id');
+    $stmt->execute([':id'  => $id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function deleteUserById($conn, $id)
+{
+    $stmt = $conn->prepare('DELETE FROM `users` WHERE id = :id');
+    return $stmt->execute([':id' => $id]);
+}
+
+function updateUser($conn, $id, $name, $email)
+{
+    $stmt = $conn->prepare(
+        'UPDATE `users` 
+    SET `name` = :name, `email` = :email
+    WHERE id = :id'
+    );
+    return $stmt->execute([
+        ':name' => $name,
+        ':email' => $email,
+        'id' => $id,
+    ]);
+}

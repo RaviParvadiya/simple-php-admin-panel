@@ -2,10 +2,10 @@
 
 header('Content-Type: application/json');
 
-require_once '../includes/helpers.php';
-require_once "../database/connection.php";
-require_once '../models/UserModel.php';
-require_once '../includes/session.php';
+require_once DATABASE_PATH . '/connection.php';
+require_once INCLUDES_PATH . '/helpers.php';
+require_once MODELS_PATH . '/AdminModel.php';
+require_once INCLUDES_PATH . '/session.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendResponse('error', 'Invalid request method.');

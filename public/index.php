@@ -1,23 +1,24 @@
 <?php
 
-require_once '../includes/session.php';
+require_once dirname(__DIR__) . '/config/config.php';
+require_once INCLUDES_PATH . '/session.php';
 
 checkUserSession();
 
 ?>
 
-<?php include '../includes/header.php'; ?>
+<?php include INCLUDES_PATH . '/partials/header.php'; ?>
 
 <!--  Body Wrapper -->
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
   data-sidebar-position="fixed" data-header-position="fixed">
   <!-- Sidebar Start -->
-  <?php include '../includes/sidebar.php' ?>
+  <?php include INCLUDES_PATH . '/partials/sidebar.php' ?>
   <!--  Sidebar End -->
   <!--  Main wrapper -->
   <div class="body-wrapper">
     <!--  Header Start -->
-    <?php include '../includes/topbar.php' ?>
+    <?php include INCLUDES_PATH . '/partials/topbar.php' ?>
     <!--  Header End -->
     <div class="container-fluid">
       <!--  Row 1 -->
