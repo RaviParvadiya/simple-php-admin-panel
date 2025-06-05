@@ -23,7 +23,7 @@ $categories = [];
 
 try {
     $conn = getDBConnection();
-    $product = getProductsById($conn, $product_id);
+    $product = getProductById($conn, $product_id);
     $categories = getAllCategories($conn);
 } catch (PDOException $e) {
     $errorMessage = "<div class='error'>Sorry, we're experiencing technical difficulties. Please try again later.</div>";

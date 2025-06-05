@@ -2,6 +2,7 @@
 
 header('Content-Type: application/json');
 
+require_once dirname(__DIR__) . '/config/config.php';
 require_once DATABASE_PATH . '/connection.php';
 require_once INCLUDES_PATH . '/helpers.php';
 require_once MODELS_PATH . '/AdminModel.php';

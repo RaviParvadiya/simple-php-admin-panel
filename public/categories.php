@@ -38,11 +38,10 @@ try {
         <?php include INCLUDES_PATH . '/partials/topbar.php' ?>
         <!--  Header End -->
         <div class="container-fluid">
-            <?php if ($errorMessage) { ?>
-                <div class="alert alert-danger"><?= $errorMessage ?></div>
-            <?php } ?>
             <div class="row">
-                <?php if (count($categories) > 0) {
+                <?php if ($errorMessage) { ?>
+                    <div class="alert alert-danger"><?= $errorMessage ?></div>
+                    <?php } elseif (count($categories) > 0) {
                     foreach ($categories as $category) { ?>
                         <div class="col-sm-6 col-xl-3 category-card" data-id="<?= $category['id'] ?>">
                             <div class="card p-3">

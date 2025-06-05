@@ -44,21 +44,25 @@ try {
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title fw-semibold mb-4">Edit Category</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <form id="editCategoryForm" action="#" method="post">
-                                    <div class="mb-3">
-                                        <label for="category_name" class="form-label">Category name</label>
-                                        <input type="text" class="form-control" name="category_name" id="category_name" value="<?= htmlspecialchars($category['name'] ?? '') ?>">
-                                    </div>
-                                    <!-- Hidden input to send category ID -->
-                                    <input type="hidden" name="category_id" value="<?= htmlspecialchars($category['id'] ?? '') ?>">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                    <div id="formMessage" style="margin-top: 10px;"></div>
-                                </form>
+                        <?php if ($errorMessage) { ?>
+                            <div class="alert alert-danger"><?= $errorMessage ?></div>
+                        <?php } elseif (!empty($category)) { ?>
+                            <h5 class="card-title fw-semibold mb-4">Edit Category</h5>
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="editCategoryForm" action="#" method="post">
+                                        <div class="mb-3">
+                                            <label for="category_name" class="form-label">Category name</label>
+                                            <input type="text" class="form-control" name="category_name" id="category_name" value="<?= htmlspecialchars($category['name'] ?? '') ?>">
+                                        </div>
+                                        <!-- Hidden input to send category ID -->
+                                        <input type="hidden" name="category_id" value="<?= htmlspecialchars($category['id'] ?? '') ?>">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <div id="formMessage" style="margin-top: 10px;"></div>
+                                    </form>
+                                <?php } ?>
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>

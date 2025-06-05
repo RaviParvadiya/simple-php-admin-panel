@@ -46,20 +46,24 @@ try {
                         <h5 class="card-title fw-semibold mb-4">Edit User</h5>
                         <div class="card">
                             <div class="card-body">
-                                <form id="editUserForm" action="#" method="post">
-                                    <div class="mb-3">
-                                        <label for="user_name" class="form-label">name</label>
-                                        <input type="text" class="form-control" name="user_name" id="user_name" value="<?= htmlspecialchars($user['name'] ?? '') ?>">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="user_email" class="form-label">Email</label>
-                                        <input type="text" class="form-control" name="user_email" id="user_email" value="<?= htmlspecialchars($user['email'] ?? '') ?>">
-                                    </div>
-                                    <!-- Hidden input to send user ID -->
-                                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($user['id'] ?? '') ?>">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                    <div id="formMessage" style="margin-top: 10px;"></div>
-                                </form>
+                                <?php if ($errorMessage) { ?>
+                                    <div class="alert alert-danger"><?= $errorMessage ?></div>
+                                <?php } elseif (!empty($user)) { ?>
+                                    <form id="editUserForm" action="#" method="post">
+                                        <div class="mb-3">
+                                            <label for="user_name" class="form-label">name</label>
+                                            <input type="text" class="form-control" name="user_name" id="user_name" value="<?= htmlspecialchars($user['name'] ?? '') ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="user_email" class="form-label">Email</label>
+                                            <input type="text" class="form-control" name="user_email" id="user_email" value="<?= htmlspecialchars($user['email'] ?? '') ?>">
+                                        </div>
+                                        <!-- Hidden input to send user ID -->
+                                        <input type="hidden" name="user_id" value="<?= htmlspecialchars($user['id'] ?? '') ?>">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <div id="formMessage" style="margin-top: 10px;"></div>
+                                    </form>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>

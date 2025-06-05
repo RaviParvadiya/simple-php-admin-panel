@@ -38,11 +38,11 @@ try {
         <?php include INCLUDES_PATH . '/partials/topbar.php' ?>
         <!--  Header End -->
         <div class="container-fluid">
-            <?php if ($errorMessage) { ?>
-                <div class="alert alert-danger"><?= $errorMessage ?></div>
-            <?php } ?>
+
             <div class="row">
-                <?php if (count($users) > 0) {
+                <?php if ($errorMessage) { ?>
+                    <div class="alert alert-danger"><?= $errorMessage ?></div>
+                    <?php } elseif (count($users) > 0) {
                     foreach ($users as $user) { ?>
                         <div class="col-sm-6 col-xl-3 user-card" data-id="<?= $user['id'] ?>">
                             <div class="card p-3">

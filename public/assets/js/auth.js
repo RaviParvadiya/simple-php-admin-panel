@@ -528,4 +528,114 @@ $(function () {
       },
     });
   });
+
+  // ========================================
+  // ORDER HANDLER
+  // ========================================
+
+  $("#addOrderForm").on("submit", function (e) {
+    e.preventDefault();
+
+    const formData = $(this).serialize();
+
+    $.ajax({
+      url: "/simple/handlers/order/add.php",
+      method: "POST",
+      data: formData,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "error") {
+          $("#formMessage").html(
+            '<div class="alert alert-danger">' + response.message + "</div>"
+          );
+        } else if (response.status === "success") {
+          $("#formMessage").html(
+            '<div class="alert alert-success">' + response.message + "</div>"
+          );
+        } else {
+          $("#formMessage").html(
+            '<div class="alert alert-warning">Unexpected response from server.</div>'
+          );
+        }
+      },
+      error: function () {
+        $("#formMessage").html(
+          '<div class="alert alert-danger">An error occurred. Please try again.</div>'
+        );
+      },
+    });
+  });
+
+  $(".delete-order").click(function (e) {
+    e.preventDefault();
+
+    const orderId = $(this).data("id");
+    $ask = confirm("Are you sure you want to delete this order?");
+
+    if (!$ask) {
+      return console.log("Abort");
+    }
+
+    $.ajax({
+      url: "/simple/handlers/order/delete.php",
+      method: "POST",
+      data: { id: orderId },
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "success") {
+          // Remove the card from DOM
+          $(`.order-card[data-id="${orderId}"]`).remove();
+          alert("Order deleted successfully.");
+        } else {
+          alert("Error deleting order.");
+        }
+      },
+      error: function () {
+        alert("Something went wrong.");
+      },
+    });
+  });
+
+  $("#editOrderForm").on("submit", function (e) {
+    e.preventDefault();
+
+    var formData = $(this).serialize();
+
+    $ask = confirm("Are you sure you want to update this order?");
+
+    if (!$ask) {
+      return console.log("Abort");
+    }
+
+    $.ajax({
+      url: "/simple/handlers/order/update.php",
+      method: "POST",
+      data: formData,
+      dataType: "json",
+      success: function (response) {
+        if (response.status === "error") {
+          $("#formMessage").html(
+            '<div class="alert alert-danger">' + response.message + "</div>"
+          );
+        } else if (response.status === "success") {
+          $("#formMessage").html(
+            '<div class="alert alert-success">' + response.message + "</div>"
+          );
+
+          setTimeout(function () {
+            window.location.href = "orders.php";
+          }, 800);
+        } else {
+          $("#formMessage").html(
+            '<div class="alert alert-warning">Unexpected response from server.</div>'
+          );
+        }
+      },
+      error: function () {
+        $("#formMessage").html(
+          '<div class="alert alert-danger">An error occurred. Please try again.</div>'
+        );
+      },
+    });
+  });
 });
